@@ -1,0 +1,54 @@
+pipeline {
+    agent any
+
+    environment {
+        DOCKER_CREDENTIALS = credentials('docker-hub')
+        KUBECONFIG = credentials('kubeconfig')
+    }
+
+    stages {
+        stage('Terraform Apply') {
+            steps {
+                script {
+                    sh 'terraform apply -auto-approve'
+                }
+            }
+        }
+
+        stage('Build') {
+            steps {
+                script {
+                    docker.build('my-node-app', '--cache-from my-node-app:latest .')
+                }
+            }
+        }
+
+        stage('Test') {
+            steps {
+                script {
+                    docker.image('my-node-app').inside {
+                        sh 'npm run lint'
+                        sh 'npm test'
+                    }
+                }
+            }
+        }
+
+        stage('Deploy') {
+            when {
+                branch 'main'
+            }
+            steps {
+                script {
+                    kubectl apply -f k8s/deployment.yaml
+                }
+            }
+        }
+    }
+    post {
+        always {
+            cleanWs()
+            slackSend channel: '#devops', message: "Build ${currentBuild.fullDisplayName} completed"
+        }
+    }
+}

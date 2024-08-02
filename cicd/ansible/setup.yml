@@ -1,0 +1,16 @@
+- name: Setup Kubernetes
+  hosts: localhost
+  vars_files:
+    - vars.yml
+  tasks:
+    - name: Install kubectl
+      apt:
+        name: kubectl
+        state: present
+
+    - name: Configure kubectl
+      command: >
+        kubectl config set-cluster my-cluster
+        --server={{ eks_cluster_endpoint }}
+        --certificate-authority={{ eks_cluster_ca_certificate }}
+

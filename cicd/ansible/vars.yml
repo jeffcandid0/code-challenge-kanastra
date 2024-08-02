@@ -1,0 +1,2 @@
+eks_cluster_endpoint: "https://kanastra.gr7.us-west-2.eks.amazonaws.com"
+eks_cluster_ca_certificate: "LS0tLS1CRUdJTiBDRVJUSU...O0tY2FydGljbG92ZT4K"
