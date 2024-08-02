@@ -55,8 +55,6 @@ Este projeto é um desafio para vaga de Devop TechLead que abrange o provisionam
 
 * O pipeline do Jenkins irá construir a imagem Docker, executar os testes e implantar a aplicação no cluster EKS.
 
-## Executando os testes
-
 ## Colaborando
 
 * **Jeferson W. Candido** - *Construção da solução* - [devops_tech_lead]
